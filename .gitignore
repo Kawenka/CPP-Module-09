@@ -1,0 +1,11 @@
+# Object files
+*.o
+
+# Build directories
+ex00/objs/
+ex01/objs/
+ex02/objs/
+**/objs/
+
+# Editor configurations
+.vscode/
