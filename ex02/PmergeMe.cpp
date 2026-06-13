@@ -1,3 +1,11 @@
+/**
+ * @file PmergeMe.cpp
+ * @author Kawenka
+ * @version 1.0
+ * @date 2026-06-13
+ * @brief Implementation of the PmergeMe class methods for Merge-Insertion sort.
+ */
+
 #include "PmergeMe.hpp"
 #include <cerrno>
 #include <iostream>
@@ -12,6 +20,9 @@ const std::string BLUE = "\033[34m";
 const std::string MAGENTA = "\033[35m";
 const std::string CYAN = "\033[36m";
 
+/**
+ * Canonical form
+ */
 PmergeMe::PmergeMe() {}
 
 PmergeMe::PmergeMe(const PmergeMe& other) : _vec(other._vec), _deque(other._deque) {}
@@ -26,12 +37,22 @@ PmergeMe &PmergeMe::operator=(const PmergeMe& other) {
 
 PmergeMe::~PmergeMe() {}
 
+/**
+ * @brief Returns the current time in microseconds.
+ * @return Current time as a double.
+ */
 double PmergeMe::getTime() {
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return (tv.tv_sec * 1000000 + tv.tv_usec);
 }
 
+/**
+ * @brief Entry point for sorting operations. 
+ * Parses arguments, performs sorts with vector and deque, and displays performance metrics.
+ * * @param argc Count of command line arguments.
+ * * @param argv Array of command line arguments.
+ */
 void PmergeMe::start(int argc, char **argv) {
     (void)argc;
     for (size_t i = 1; argv[i]; i++) {
@@ -73,6 +94,10 @@ void PmergeMe::start(int argc, char **argv) {
             << " elements with std::deque : " << timeDeque << " us" << std::endl;
 }
 
+/**
+ * @brief Sorts a deque using the Ford-Johnson (Merge-Insertion) algorithm.
+ * * @param numbers The deque to be sorted.
+ */
 void PmergeMe::sortDeque(std::deque<int>& numbers) {
     int straggler = -1;
     bool odd = false;
@@ -166,6 +191,10 @@ void PmergeMe::sortDeque(std::deque<int>& numbers) {
     numbers = main;
 }
 
+/**
+ * @brief Sorts a vector using the Ford-Johnson (Merge-Insertion) algorithm.
+ * * @param numbers The vector to be sorted.
+ */
 void PmergeMe::sortVector(std::vector<int>& numbers) {
     int straggler = -1;
     bool odd = false;
@@ -259,6 +288,12 @@ void PmergeMe::sortVector(std::vector<int>& numbers) {
     numbers = main;
 }
 
+/**
+ * @brief Computes the Jacobsthal number for a given index.
+ * Jacobsthal numbers are used to determine the insertion order in Ford-Johnson sort.
+ * * @param n The index in the Jacobsthal sequence.
+ * @return The Jacobsthal number at index n.
+ */
 size_t PmergeMe::jacobsthal(size_t n) {
     if (n == 0) return 0;
     if (n == 1) return 1;

@@ -1,3 +1,11 @@
+/**
+ * @file main.cpp
+ * @author Kawenka
+ * @version 1.0
+ * @date 2026-06-13
+ * @brief Entry point for the Bitcoin exchange program.
+ */
+
 #include "BitcoinExchange.hpp"
 
 const std::string RESET = "\033[0m";
@@ -8,6 +16,13 @@ const std::string BLUE = "\033[34m";
 const std::string MAGENTA = "\033[35m";
 const std::string CYAN = "\033[36m";
 
+/**
+ * @brief Main function.
+ * Validates command line arguments and initiates the Bitcoin exchange process.
+ * * @param argc Number of command line arguments.
+ * * @param argv Array of command line arguments.
+ * @return 0 on success, 1 on failure.
+ */
 int main(int argc, char **argv) {
     if (argc != 2) {
         std::cerr << RED << "Usage : ./btc [FILENAME]" << RESET << std::endl;

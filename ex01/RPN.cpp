@@ -1,6 +1,17 @@
+/**
+ * @file RPN.cpp
+ * @author Kawenka
+ * @version 1.0
+ * @date 2026-06-13
+ * @brief Implementation of the RPN class methods for Reverse Polish Notation evaluation.
+ */
+
 #include "RPN.hpp"
 #include <climits>
 
+/**
+ * Canonical form
+ */
 RPN::RPN() {}
 
 RPN::RPN(const RPN& other) : _stack(other._stack) {}
@@ -13,6 +24,12 @@ RPN &RPN::operator=(const RPN& other) {
 
 RPN::~RPN() {}
 
+/**
+ * @brief Calculates the result of a Reverse Polish Notation expression.
+ * Processes the expression token by token, performing arithmetic operations
+ * and handling errors such as division by zero or stack underflow.
+ * * @param expression The RPN expression as a string.
+ */
 void RPN::calculate(const std::string& expression) {
     std::stringstream ss(expression);
     std::string token;

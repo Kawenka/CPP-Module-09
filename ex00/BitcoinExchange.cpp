@@ -1,5 +1,16 @@
+/**
+ * @file BitcoinExchange.cpp
+ * @author Kawenka
+ * @version 1.0
+ * @date 2026-06-13
+ * @brief Implementation of the BitcoinExchange class methods for database management and value calculation.
+ */
+
 #include "BitcoinExchange.hpp"
 
+/**
+ * Canonical form
+ */
 BitcoinExchange::BitcoinExchange() {
     this->loadDatabase("data.csv");
 }
@@ -20,6 +31,14 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange& other) {
 
 BitcoinExchange::~BitcoinExchange() {}
 
+/**
+ * @brief Loads historical Bitcoin data from a CSV file.
+ * Reads the file line by line, validates date and value formats, 
+ * and stores valid data in the internal structure.
+ * * @param filename The path to the data file.
+ * @throw BitcoinExchange::CantOpenFileException If the file cannot be opened.
+ * @throw BitcoinExchange::InvalidFileException If the file is empty or invalid from the first line.
+ */
 void BitcoinExchange::loadDatabase(const std::string& filename) {
     std::ifstream dataFile(filename.c_str());
     if (!dataFile)
@@ -40,7 +59,6 @@ void BitcoinExchange::loadDatabase(const std::string& filename) {
         if (!BitcoinExchange::isValidDate(date))
             continue;
         
-
         std::string stringValue = line.substr(pos + 1);
         double value = 0;
         std::stringstream ss(stringValue);
@@ -52,11 +70,18 @@ void BitcoinExchange::loadDatabase(const std::string& filename) {
             continue;
         if (value < 0)
             continue;
-        // std::cout << std::fixed << std::setprecision(2) << value << std::endl;
+        
         this->_database[date] = value;
     }
 }
 
+/**
+ * @brief Processes a user input file to evaluate Bitcoin amounts at specific dates.
+ * Outputs the calculation result or an error message for each read line.
+ * * @param inputFile The path to the input file containing the requests.
+ * @throw BitcoinExchange::CantOpenFileException If the file cannot be opened.
+ * @throw BitcoinExchange::InvalidFileException If the file is empty or unreadable.
+ */
 void BitcoinExchange::processInputFile(const std::string& inputFile) {
     std::ifstream inputfile(inputFile.c_str());
     if (!inputfile)
@@ -79,10 +104,9 @@ void BitcoinExchange::processInputFile(const std::string& inputFile) {
         std::string stringValue = line.substr(13);
 
         if (!isValidDate(date)) {
-            std::cout << "Error: bad input => " << date << std::endl;    
+            std::cout << "Error: bad input => " << date << std::endl;   
             continue;
         }
-
 
         double value = 0;
         std::stringstream ss(stringValue);
@@ -114,6 +138,12 @@ void BitcoinExchange::processInputFile(const std::string& inputFile) {
     }
 }
 
+/**
+ * @brief Checks the format compliance and temporal validity of a date.
+ * Ensures the string respects the YYYY-MM-DD format and accounts for leap years.
+ * * @param date The string representing the date to validate.
+ * @return true if the date is syntactically and logically correct, false otherwise.
+ */
 bool BitcoinExchange::isValidDate(const std::string& date) {
     if (date.length() != 10)
         return false;
@@ -144,6 +174,12 @@ bool BitcoinExchange::isValidDate(const std::string& date) {
     return true;
 }
 
+/**
+ * @brief Verifies that the provided numerical value is within allowed limits.
+ * The value must be strictly positive and not exceed 1000.
+ * * @param value The floating-point number to evaluate.
+ * @return true if the value is between 0 (exclusive) and 1000 (inclusive), false otherwise.
+ */
 bool BitcoinExchange::isValidValue(double value) {
     if (value < 0) {
         std::cout << "Error: not a positive number." << std::endl;
